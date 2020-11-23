@@ -6,34 +6,22 @@
 
 int main()
 {
-	GeneratorL_N * gen = new GeneratorL_N("C:\\Users\\vtroynya\\source\\repos\\sci_work\\sci_work\\register.txt", 48, 0);
-	//Parser parser;
-	//LFSR lfsr = parser.parseLSFRfile("C:\\Users\\vtroynya\\source\\repos\\sci_work\\sci_work\\register.txt");"C:\\Users\\vtroynya\\source\\repos\\sci_work\\sci_work\\widthMatrix.txt"
+	GeneratorL_N * gen = new GeneratorL_N("../register.txt", 48, 0);
+	gen->showStates();
 	ui8 tmp = 0;
 	gen->showMatrix();
+	std::cout << "Test PRNG based on neural network Hopfield and LFSR" << std::endl;
 	GeneratorN * gen1 = new GeneratorN;
-	/*gen1->showState();
-	gen1->showMatrix();
-	showKey(16, gen1->getKey(16));
-	gen1->showState();*/
-	HiTest * hitest = new HiTest(pow(2, 32), 32, gen);
+	HiTest * hitest = new HiTest(pow(2, 31), 31, gen);
 	hitest->generateSamples();
-	//hitest->test();
-	while(!hitest->test())
-	{
-		delete gen;
-		gen = new GeneratorL_N("C:\\Users\\vtroynya\\source\\repos\\sci_work\\sci_work\\register.txt", 48, 0);
-		hitest->setGen(gen);
-		hitest->generateSamples();
-	}
+	hitest->test();
+	gen->writeToFile(100000000);
 	delete hitest;
-
-	HiTest * hitest1 = new HiTest(pow(2, 32), 32, gen1);
+	std::cout << std::endl;
+	std::cout << "Test PRNG based on neural network Hopfield with float matrix" << std::endl;
+	HiTest * hitest1 = new HiTest(pow(2, 31), 31, gen1);
 	hitest1->generateSamples();
 	hitest1->test();
 	delete hitest1;
-	//gen->showTableOfAttractors();
-	system("pause");
-	//delete gen;
 	return 0;
 }
