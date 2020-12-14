@@ -71,10 +71,10 @@ uint8_t NNH::doStep() {
 			sum += (_widthMatrix[i][j] * ((_vecNeuronState >> (_numNeurons - j - 1)) & 1));
 		}
 		tmp = tmp << 1;
-		if (sum > 0)
+		if (sum >= 0)
 			tmp = tmp | 1;
 		else
-			if (sum <= 0)
+			if (sum < 0)
 				tmp = tmp | 0;
 			else
 				tmp = tmp | ((_vecNeuronState >> (_numNeurons - i - 1)) & 1);
@@ -155,11 +155,12 @@ void NNH::generateWeightMatrix()
 				_widthMatrix[i][rowMatrix[j]] = -1;
 			}
 
-			distrib = std::uniform_int_distribution<>(0, _numNeurons / 2 - 1);
+			distrib = std::uniform_int_distribution<>(0, _numNeurons - 1);
 			tmp1 = distrib(gen);
 			_widthMatrix[i][tmp1] = 0;
-			distrib = std::uniform_int_distribution<>(_numNeurons / 2, _numNeurons - 1);
 			tmp2 = distrib(gen);
+			while (tmp1 == tmp2)
+				tmp2 = distrib(gen);
 			_widthMatrix[i][tmp2] = 0;
 			if (_widthMatrix[i][i] == 1)
 			{
