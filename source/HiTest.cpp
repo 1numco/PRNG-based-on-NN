@@ -1,6 +1,6 @@
 #include "HiTest.hpp"
 
-HiTest::HiTest(ui64 maxValue, int keyLength, Generator * gen) : Test(maxValue, keyLength, gen), _mean(0), _variance(0) {}
+HiTest::HiTest(ui64 maxValue, Generator * gen) : Test(maxValue, gen), _mean(0), _variance(0) {}
 
 HiTest::~HiTest()
 {
@@ -11,7 +11,8 @@ void HiTest::generateSamples()
 {
 	for (int i = 0; i < n; ++i)
 	{
-		samples[i] = _gen->getKey(_keyLength) / (double)_maxValue;
+		ui64 tmp = _gen->getKey();
+		samples[i] = tmp / (double)_maxValue;
 		frequency[(int)(samples[i] / etalonFreq)] += 1;
 	}
 }

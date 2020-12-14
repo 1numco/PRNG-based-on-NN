@@ -5,12 +5,12 @@
 class Generator
 {
 public:
-	NNH * net;
-	virtual ui64 getKey(int size) = 0;
-	virtual void writeToFile(ui64 size)
+	int _keySize;
+	virtual ui64 getKey() = 0;
+	virtual void writeSamplesToTextFile(ui64 size, std::string path)
 	{
 		std::ofstream myfile;
-		myfile.open("../generated_samples.txt");
+		myfile.open(path);
 		if (myfile.is_open())
 		{
 			myfile << "#==================================================================\n";
@@ -21,7 +21,19 @@ public:
 			myfile << "numbit: 32";
 			for (ui64 i = 0; i < size; ++i)
 			{
-				myfile << "\n" << getKey(32);
+				myfile << "\n" << getKey();
+			}
+		}
+		myfile.close();
+	}
+	virtual void writeSamplesToBinFile(ui64 size, std::string path)
+	{
+		std::ofstream myfile(path, std::ios_base::binary|std::ios::out);
+		if (myfile.is_open())
+		{
+			for (int i = 0; i < size; ++i) {
+				ui64 value = getKey();
+				myfile.write((char*)&value, sizeof(ui32));
 			}
 		}
 		myfile.close();

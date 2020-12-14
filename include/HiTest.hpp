@@ -14,7 +14,7 @@ private:
 	double _mean;
 	double _variance;
 public:
-	HiTest(ui64 maxValue, int keyLength, Generator * gen);
+	HiTest(ui64 maxValue, Generator * gen);
 	~HiTest();
 	void generateSamples();
 	void mean();

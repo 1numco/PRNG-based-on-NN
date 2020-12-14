@@ -1,25 +1,28 @@
 #include "GeneratorL_N.hpp"
 
-GeneratorL_N::GeneratorL_N()
+GeneratorL_N::GeneratorL_N(int keySize)
 {
 	reg = nullptr;
 	net = nullptr;
+	_keySize = keySize;
 }
 
 GeneratorL_N::GeneratorL_N(std::string pathToRegisterState,
-	std::string pathToNeuronWidths)
+	std::string pathToNeuronWidths, int keySize)
 {
 	Parser parser;
 	reg = parser.parseLSFRfile(pathToRegisterState);
 	net = parser.parseNNHfile(pathToNeuronWidths);
+	_keySize = keySize;
 }
 
-GeneratorL_N::GeneratorL_N(std::string pathToRegisterState, ui8 N, ui64 state)
+GeneratorL_N::GeneratorL_N(std::string pathToRegisterState, ui8 N, ui64 state, int keySize)
 {
 	Parser parser;
 	reg = parser.parseLSFRfile(pathToRegisterState);
 	net = new NNH(N, state);
 	net->generateWeightMatrix();
+	_keySize = keySize;
 }
 
 GeneratorL_N::~GeneratorL_N()
@@ -36,11 +39,11 @@ ui8 GeneratorL_N::doStep()
 	return out;
 }
 
-ui64 GeneratorL_N::getKey(int size)
+ui64 GeneratorL_N::getKey()
 {
 	ui64 out = 0;
 	int i;
-	for (i = 0; i < size; i++)
+	for (i = 0; i < _keySize; i++)
 	{
 		out = out << 1 | doStep() & 1;
 	}

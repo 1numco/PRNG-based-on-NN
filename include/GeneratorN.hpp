@@ -9,12 +9,12 @@ private:
 	double _vecNeuronState[100] = { 0 };
 	double _widthMatrix[100][100] = { {0} };
 public:
-	GeneratorN();
+	GeneratorN(int keySize = 32);
 	GeneratorN(GeneratorN const& other);
 	GeneratorN(GeneratorN && other);
 	GeneratorN & operator=(GeneratorN const& other);
 	GeneratorN & operator=(GeneratorN && other);
-	ui64 getKey(int size);
+	ui64 getKey();
 	void showState();
 	void showMatrix();
 	~GeneratorN();

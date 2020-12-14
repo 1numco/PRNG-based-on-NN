@@ -10,12 +10,13 @@ class GeneratorL_N: public Generator
 private:
 	LFSR * reg;
 public:
-	GeneratorL_N();
-	GeneratorL_N(std::string pathToRegisterState, std::string pathToNeuronWidths);
-	GeneratorL_N(std::string pathToRegisterState, ui8 N, ui64 state);
+	NNH * net;
+	GeneratorL_N(int keySize = 32);
+	GeneratorL_N(std::string pathToRegisterState, std::string pathToNeuronWidthsint, int keySize = 32);
+	GeneratorL_N(std::string pathToRegisterState, ui8 N, ui64 state, int keySize = 32);
 	~GeneratorL_N();
 	ui8 doStep();
-	ui64 getKey(int size);
+	ui64 getKey();
 	void showStates();
 	void showMatrix();
 	//void showAttractors();

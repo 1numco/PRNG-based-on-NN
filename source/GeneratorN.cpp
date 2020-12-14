@@ -1,6 +1,6 @@
 #include "GeneratorN.hpp"
 
-GeneratorN::GeneratorN()
+GeneratorN::GeneratorN(int keySize)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -19,6 +19,7 @@ GeneratorN::GeneratorN()
 		for (int j = 0; j < i; ++j)
 			_widthMatrix[i][j] = dis(gen);
 	_isFirstIteration = true;
+	_keySize = keySize;
 }
 
 GeneratorN::GeneratorN(GeneratorN const& other)
@@ -28,6 +29,7 @@ GeneratorN::GeneratorN(GeneratorN const& other)
 	for (int i = 0; i < 100; ++i)
 		for (int j = 0; j < 100; ++j)
 			_widthMatrix[i][j] = other._widthMatrix[i][j];
+	_keySize = other._keySize;
 }
 
 GeneratorN::GeneratorN(GeneratorN && other)
@@ -44,6 +46,8 @@ GeneratorN::GeneratorN(GeneratorN && other)
 			_widthMatrix[i][j] = other._widthMatrix[i][j];
 			other._widthMatrix[i][j] = 0.0;
 		}
+	_keySize = other._keySize;
+	other._keySize = 0;
 }
 
 GeneratorN & GeneratorN::operator=(GeneratorN const& other)
@@ -55,6 +59,7 @@ GeneratorN & GeneratorN::operator=(GeneratorN const& other)
 		for (int i = 0; i < 100; ++i)
 			for (int j = 0; j < 100; ++j)
 				_widthMatrix[i][j] = other._widthMatrix[i][j];
+		_keySize = other._keySize;
 	}
 	return *this;
 }
@@ -73,10 +78,12 @@ GeneratorN & GeneratorN::operator=(GeneratorN && other)
 			_widthMatrix[i][j] = other._widthMatrix[i][j];
 			other._widthMatrix[i][j] = 0.0;
 		}
+	_keySize = other._keySize;
+	other._keySize = 0;
 	return *this;
 }
 
-ui64 GeneratorN::getKey(int size) 
+ui64 GeneratorN::getKey() 
 {
 	ui64 out = 0;
 	double Enew = 0;
@@ -111,7 +118,7 @@ ui64 GeneratorN::getKey(int size)
 	}
 	int tmp_size = 0;
 	int i = 0;
-	while (tmp_size < size - 3)
+	while (tmp_size < _keySize - 3)
 	{
 		ui8 dig = (i64)(_vecNeuronState[i] * 10000000000) % 10;
 		if (dig < 8)
@@ -126,7 +133,7 @@ ui64 GeneratorN::getKey(int size)
 		ui8 dig = (i64)(_vecNeuronState[i] * 10000000000) % 10;
 		if (dig < 8)
 		{
-			out = (out << (size - tmp_size)) | (dig & int(pow(2, size - tmp_size) - 1));
+			out = (out << (_keySize - tmp_size)) | (dig & int(pow(2, _keySize - tmp_size) - 1));
 			tmp_size = 0;
 		}
 		i++;
