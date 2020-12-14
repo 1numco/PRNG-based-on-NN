@@ -1,5 +1,8 @@
 #pragma once
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctime>
 #include <bitset>
 #include <string>
 #include <iostream>
