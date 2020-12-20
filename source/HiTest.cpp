@@ -1,10 +1,10 @@
 #include "HiTest.hpp"
 
-HiTest::HiTest(ui64 maxValue, Generator * gen) : Test(maxValue, gen), _mean(0), _variance(0) {}
+HiTest::HiTest(Generator * gen) : Test(gen), _maxValue(pow(2, gen->getKeySize())), _mean(0), _variance(0) {}
 
 HiTest::~HiTest()
 {
-	delete _gen;
+	_gen = nullptr;
 }
 
 void HiTest::generateSamples()
@@ -47,8 +47,9 @@ void HiTest::variance()
 	_variance /= n;
 }
 
-bool HiTest::test()
+void HiTest::test()
 {
+	generateSamples();
 	variance();
 	double hi = calculateHi();
 	std::cout << "Calculated Hi^2 value: " << hi << std::endl;
@@ -58,7 +59,6 @@ bool HiTest::test()
 		std::cout << "Calculated Hi^2 > Etalon Hi^2 => reject null hypothesis " << std::endl;
 		std::cout << "Mean: " << _mean << std::endl;
 		std::cout << "Variance: " << _variance << std::endl;
-		return false;
 	}
 		
 	else
@@ -66,11 +66,5 @@ bool HiTest::test()
 		std::cout << "Calculated Hi^2 > Etalon Hi^2 => failed to reject null hypothesis " << std::endl;
 		std::cout << "Mean: " << _mean << std::endl;
 		std::cout << "Variance: " << _variance << std::endl;
-		return true;
 	}
-}
-
-void HiTest::setGen(Generator * gen)
-{
-	_gen = gen;
 }

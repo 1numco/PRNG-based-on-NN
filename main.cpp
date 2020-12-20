@@ -4,44 +4,63 @@
 #include "GeneratorN.hpp"
 #include "HiTest.hpp"
 #include "LCG.hpp"
+#include "CCG.hpp"
 #include "EmbGenerator.hpp"
+#include "TimeTest.hpp"
 
 int main()
 {
 	int keyLen = 32;
-	GeneratorL_N * gen1 = new GeneratorL_N("../register.txt", 48, 0, keyLen);
 	std::cout << "Test PRNG based on neural network Hopfield and LFSR" << std::endl;
-	GeneratorN * gen2 = new GeneratorN(keyLen);
-	HiTest * hitest = new HiTest(pow(2, keyLen), gen1);
-	hitest->generateSamples();
+	GeneratorL_N * gen1 = new GeneratorL_N("../register.txt", 48, 0, keyLen);
+	HiTest * hitest = new HiTest(gen1);
 	hitest->test();
-	gen1->writeSamplesToBinFile(1000000, "../generated_samples_1_1.bin");
-	delete hitest;
+	TimeTest * timetest = new TimeTest(gen1);
+	// timetest->test();
+	//gen1->writeSamplesToBinFile(1000000, "../generated_samples_1_1.bin");
+	delete gen1;
 
 	std::cout << std::endl;
 	std::cout << "Test PRNG based on neural network Hopfield with float matrix" << std::endl;
-	HiTest * hitest1 = new HiTest(pow(2, keyLen), gen2);
-	hitest1->generateSamples();
-	hitest1->test();
+	GeneratorN * gen2 = new GeneratorN(keyLen);
+	hitest->setGen(gen2);
+	hitest->test();
+	timetest->setGen(gen2);
+	// timetest->test();
 	// gen2->writeSamplesToBinFile(1000000, "../generated_samples_2.bin");
-	delete hitest1;
+	delete gen2;
 
 	std::cout << std::endl;
 	std::cout << "Test LCG" << std::endl;
 	LCG * gen3 = new LCG;
-	HiTest * hitest2 = new HiTest(pow(2, keyLen), gen3);
-	hitest2->generateSamples();
-	hitest2->test();
-	//gen3->writeSamplesToBinFile(1000000, "../generated_samples_4.bin");
-	delete hitest2;
+	hitest->setGen(gen3);
+	hitest->test();
+	timetest->setGen(gen3);
+	timetest->test();
+	gen3->writeSamplesToBinFile(1000000, "../generated_samples_4.bin");
+	delete gen3;
 
 	std::cout << std::endl;
 	std::cout << "Test embedded non-deterministic generator" << std::endl;
 	EmbGenerator * gen4 = new EmbGenerator;
-	HiTest * hitest3 = new HiTest(pow(2, keyLen), gen4);
-	hitest3->generateSamples();
-	hitest3->test();
+	hitest->setGen(gen4);
+	hitest->test();
+	timetest->setGen(gen4);
+	timetest->test();
 	//gen4->writeSamplesToBinFile(1000000, "../generated_samples_5.bin");
-	delete hitest3;
+	delete gen4;
+
+	std::cout << std::endl;
+	std::cout << "Test CCG" << std::endl;
+	CCG * gen5 = new CCG;
+	hitest->setGen(gen5);
+	hitest->test();
+	timetest->setGen(gen5);
+	timetest->test();
+	gen5->writeSamplesToBinFile(1000000, "../generated_samples_6.bin");
+	delete gen5;
+
+	delete timetest;
+	delete hitest;
 	return 0;
 }

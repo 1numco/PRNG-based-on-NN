@@ -7,14 +7,11 @@
 class Test
 {
 protected:
-	ui64 _maxValue;
-	int n = 5000;
-	double samples[5000] = { 0 };
 	Generator * _gen = nullptr;
 public:
-	Test(ui64 maxValue, Generator * gen) : _maxValue(maxValue), _gen(gen){}
+	Test(Generator * gen) : _gen(gen) {}
 	virtual void generateSamples(){}
-	virtual bool test() { return false; }
-	virtual void setGen(){}
+	virtual void test() {}
+	virtual void setGen(Generator * gen){ _gen = nullptr; _gen = gen;}
 	virtual ~Test(){}
 };

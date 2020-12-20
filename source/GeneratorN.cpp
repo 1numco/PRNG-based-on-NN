@@ -20,6 +20,7 @@ GeneratorN::GeneratorN(int keySize)
 			_widthMatrix[i][j] = dis(gen);
 	_isFirstIteration = true;
 	_keySize = keySize;
+	_name = "Generator based on Hopfield neural network with float weight matrix";
 }
 
 GeneratorN::GeneratorN(GeneratorN const& other)
@@ -30,6 +31,7 @@ GeneratorN::GeneratorN(GeneratorN const& other)
 		for (int j = 0; j < 100; ++j)
 			_widthMatrix[i][j] = other._widthMatrix[i][j];
 	_keySize = other._keySize;
+	_name = other._name;
 }
 
 GeneratorN::GeneratorN(GeneratorN && other)
@@ -48,6 +50,7 @@ GeneratorN::GeneratorN(GeneratorN && other)
 		}
 	_keySize = other._keySize;
 	other._keySize = 0;
+	_name = other._name;
 }
 
 GeneratorN & GeneratorN::operator=(GeneratorN const& other)
@@ -60,6 +63,7 @@ GeneratorN & GeneratorN::operator=(GeneratorN const& other)
 			for (int j = 0; j < 100; ++j)
 				_widthMatrix[i][j] = other._widthMatrix[i][j];
 		_keySize = other._keySize;
+		_name = other._name;
 	}
 	return *this;
 }
@@ -80,6 +84,7 @@ GeneratorN & GeneratorN::operator=(GeneratorN && other)
 		}
 	_keySize = other._keySize;
 	other._keySize = 0;
+	_name = other._name;
 	return *this;
 }
 

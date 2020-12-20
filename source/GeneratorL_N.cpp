@@ -5,6 +5,7 @@ GeneratorL_N::GeneratorL_N(int keySize)
 	reg = nullptr;
 	net = nullptr;
 	_keySize = keySize;
+	_name = "Generator based on Hopfield neural network and LFSR";
 }
 
 GeneratorL_N::GeneratorL_N(std::string pathToRegisterState,
@@ -14,6 +15,7 @@ GeneratorL_N::GeneratorL_N(std::string pathToRegisterState,
 	reg = parser.parseLSFRfile(pathToRegisterState);
 	net = parser.parseNNHfile(pathToNeuronWidths);
 	_keySize = keySize;
+	_name = "Generator based on Hopfield neural network and LFSR";
 }
 
 GeneratorL_N::GeneratorL_N(std::string pathToRegisterState, ui8 N, ui64 state, int keySize)
@@ -23,6 +25,7 @@ GeneratorL_N::GeneratorL_N(std::string pathToRegisterState, ui8 N, ui64 state, i
 	net = new NNH(N, state);
 	net->generateWeightMatrix();
 	_keySize = keySize;
+	_name = "Generator based on Hopfield neural network and LFSR";
 }
 
 GeneratorL_N::~GeneratorL_N()

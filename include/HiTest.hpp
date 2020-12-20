@@ -6,6 +6,9 @@ class HiTest: public Test
 {
 private:
 	int k = 101;
+	ui64 _maxValue;
+	int n = 5000;
+	double samples[5000] = { 0 };
 	double etalonHi = 124.3421134;
 	int frequency[101] = { 0 };
 	double etalonFreq = 1.0 / k;
@@ -14,11 +17,10 @@ private:
 	double _mean;
 	double _variance;
 public:
-	HiTest(ui64 maxValue, Generator * gen);
+	HiTest(Generator * gen);
 	~HiTest();
 	void generateSamples();
 	void mean();
 	void variance();
-	void setGen(Generator * gen);
-	bool test();
+	void test();
 };

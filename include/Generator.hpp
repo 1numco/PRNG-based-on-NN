@@ -4,9 +4,13 @@
 
 class Generator
 {
-public:
+protected:
 	int _keySize;
+	std::string _name;
+public:
 	virtual ui64 getKey() = 0;
+	virtual int getKeySize() {return _keySize;}
+	virtual std::string getName() { return _name;} 
 	virtual void writeSamplesToTextFile(ui64 size, std::string path)
 	{
 		std::ofstream myfile;
